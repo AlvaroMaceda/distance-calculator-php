@@ -5,11 +5,11 @@ require_once 'autoloader.php';
 
 class CSVDistanceCalculator
 {
-    private $placeOrigin;
+    private $commonOrigin;
 
-    public function __construct($key, $placeOrigin = null, $units = null)
+    public function __construct($key, $commonOrigin = null, $units = null)
     {
-        $this->placeOrigin = $placeOrigin ?: $this->placeOrigin;
+        $this->commonOrigin = $commonOrigin ?: $this->commonOrigin;
         $this->distanceMatrix = new GoogleDistanceMatrix($key, $units);
     }
 
@@ -21,25 +21,39 @@ class CSVDistanceCalculator
             $pathData = $this->calculatePathDataFromLine($line);
             $distance = $this->distanceMatrix->calculateDistance($pathData['origin'], $pathData['destination']);
             $this->writeResultToOutput($fileDestination, $line, $distance);
-//            echo($pathData['origin']." to ".$pathData['destination']."->".$distance."\n");
         }
     }
 
     private function calculatePathDataFromLine($data)
     {
         $pathData = [
-            'destination' => $data[0]
+            'destination' => $this->getLastField($data)
         ];
 
-        if (count($data) >= 2) {
-            $pathData['origin'] = $data[1];
-        } elseif (count($data) == 1) {
-            $pathData['origin'] = $this->placeOrigin;
+        if ($this->isCommonOriginSpecified()) {
+            $pathData['origin'] = $this->commonOrigin;
+
         } else {
-            throw new \Exception('Invalid CSV data');
+            $pathData['origin'] = $this->getPenultimateField($data);
         }
 
         return $pathData;
+    }
+
+    private function isCommonOriginSpecified()
+    {
+        return !empty($this->commonOrigin);
+    }
+
+
+    private function getPenultimateField($data)
+    {
+        return array_slice($data, -2, 1)[0];
+    }
+
+    private function getLastField($data)
+    {
+        return array_slice($data, -1)[0];
     }
 
     private function writeResultToOutput($fileOutput, $line, DistanceData $distance)

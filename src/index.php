@@ -38,12 +38,11 @@ function parseArguments()
 array_shift($argv);
 $key = $argv[0];
 
-$calculator = new \DistanceCalculator\CSVDistanceCalculator($key);
-//$fileOrigin = fopen('../test/fixtures/TwoColumns2.csv', "r");
-//$calculator->calculate($fileOrigin);
+$origin = 'Lepe';
 
-$calculator = new \DistanceCalculator\CSVDistanceCalculator($key,'Minnesota');
-$fileOrigin = fopen('../test/fixtures/OneColumn2.csv', "r");
+$calculator = new \DistanceCalculator\CSVDistanceCalculator($key, $origin);
+//$calculator = new \DistanceCalculator\CSVDistanceCalculator($key);
+$fileOrigin = fopen('../test/fixtures/MoreThanTwoColumns.csv', "r");
 $calculator->calculate($fileOrigin);
 
 fclose($fileOrigin);
