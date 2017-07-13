@@ -7,5 +7,6 @@ if (USE_COMPOSER) {
 } else {
     require_once 'DistanceData.php';
     require_once 'NullDistanceData.php';
+    require_once 'GoogleDistanceMatrix.php';
     require_once 'DistanceCalculator.php';
 }
