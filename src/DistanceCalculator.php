@@ -1,7 +1,7 @@
 <?php
 namespace DistanceCalculator;
 
-require_once 'DistanceData.php'; // To be autocontained
+require_once 'autoloader.php';
 
 class DistanceCalculator
 {
@@ -47,19 +47,17 @@ class DistanceCalculator
             throw new \Exception($data->error_message);
         }
 
-        if ($data->rows[0]->elements[0]->status==='OK') {
+        $line = $data->rows[0]->elements[0];
+        if ($line->status==='OK') {
             return new DistanceData(
-                $data->rows[0]->elements[0]->distance->value,
-                $data->rows[0]->elements[0]->distance->text,
-                $data->rows[0]->elements[0]->duration->value,
-                $data->rows[0]->elements[0]->duration->text
+                $line->distance->value,
+                $line->distance->text,
+                $line->duration->value,
+                $line->duration->text
             );
+        } else {
+            return new NullDistanceData("Error calculating distance: {$line->status}");
         }
-
-//        } else {
-//            return new DistanceDataError()???
-//        }
-        return null;
     }
 
     private function getBaseURL()

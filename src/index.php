@@ -1,7 +1,8 @@
 <?php
 
-//require_once '../vendor/autoload.php';
-require_once 'DistanceCalculator.php'; //Let's keep this autocontainde
+
+require_once 'autoloader.php';
+
 
 function parseArguments()
 {
