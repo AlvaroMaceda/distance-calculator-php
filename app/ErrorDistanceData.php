@@ -1,7 +1,7 @@
 <?php
 namespace DistanceCalculator;
 
-class NullDistanceData extends DistanceData
+class ErrorDistanceData extends DistanceData
 {
     private $message;
 

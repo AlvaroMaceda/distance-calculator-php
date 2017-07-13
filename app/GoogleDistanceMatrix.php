@@ -46,7 +46,7 @@ class GoogleDistanceMatrix
     {
         if ($data->status != 'OK') {
             $error = $this->obtainResponseErrorMessage($data);
-            return new NullDistanceData($error);
+            return new ErrorDistanceData($error);
         }
 
         $line = $data->rows[0]->elements[0];
@@ -59,7 +59,7 @@ class GoogleDistanceMatrix
             );
         } else {
             $error = $this->obtainLineErrorMessage($line);
-            return new NullDistanceData($error);
+            return new ErrorDistanceData($error);
         }
     }
 
