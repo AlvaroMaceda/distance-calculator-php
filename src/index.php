@@ -37,5 +37,8 @@ function parseArguments()
 }
 array_shift($argv);
 $key = $argv[0];
-$calculator = new \DistanceCalculator\DistanceCalculator($key);
-$calculator->calculate('../test/fixtures/TwoColumns2.csv');
+$calculator = new \DistanceCalculator\CSVDistanceCalculator($key);
+
+$fileOrigin = fopen('../test/fixtures/TwoColumns2.csv', "r");
+$calculator->calculate($fileOrigin);
+fclose($fileOrigin);
