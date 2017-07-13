@@ -15,4 +15,9 @@ class NullDistanceData extends DistanceData
     {
         return "[{$this->message}]";
     }
+
+    public function toArray()
+    {
+        return [$this->message];
+    }
 }

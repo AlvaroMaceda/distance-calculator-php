@@ -40,5 +40,6 @@ $key = $argv[0];
 $calculator = new \DistanceCalculator\CSVDistanceCalculator($key);
 
 $fileOrigin = fopen('../test/fixtures/TwoColumns2.csv', "r");
+//$fileOrigin = fopen('../test/fixtures/OneColumn2.csv', "r");
 $calculator->calculate($fileOrigin);
 fclose($fileOrigin);

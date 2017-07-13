@@ -20,4 +20,14 @@ class DistanceData
     {
         return "[{$this->distance},{$this->distanceText},{$this->time},{$this->timeText}]";
     }
+
+    public function toArray()
+    {
+        return [
+            $this->distance,
+            $this->distanceText,
+            $this->time,
+            $this->timeText
+        ];
+    }
 }

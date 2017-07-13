@@ -37,7 +37,8 @@ class GoogleDistanceMatrix
     private function parseDistanceData($data)
     {
         if ($data->status != 'OK') {
-            return new NullDistanceData("Error calculating distance: {$data->error_message}");
+            $error = $this->obtainResponseErrorMessage($data);
+            return new NullDistanceData($error);
         }
 
         $line = $data->rows[0]->elements[0];
@@ -49,7 +50,8 @@ class GoogleDistanceMatrix
                 $line->duration->text
             );
         } else {
-            return new NullDistanceData("Error calculating distance: {$line->status}");
+            $error = $this->obtainLineErrorMessage($line);
+            return new NullDistanceData($error);
         }
     }
 
@@ -69,6 +71,21 @@ class GoogleDistanceMatrix
         $query = http_build_query($parameters);
 
         return $this->getBaseURL() . $query;
+    }
+
+    private function obtainResponseErrorMessage($data)
+    {
+        $error = '';
+        if (isset($data->error_message)) {
+            $error .= $data->error_message;
+        }
+        $error .= ' Status:' . $data->status;
+        return $error;
+    }
+
+    private function obtainLineErrorMessage($line)
+    {
+        return $line->status;
     }
 
 }
