@@ -1,37 +1,83 @@
 <?php
 namespace DistanceCalculator;
 
+require_once 'DistanceData.php'; // To be autocontained
+
 class DistanceCalculator
 {
 
     const API_HOST = 'https://maps.googleapis.com';
-    const API_URL = '/maps/api/distancematrix/json';
+    const API_URL = '/maps/api/distancematrix/json?';
+    const DEFAULT_UNItS = 'metric';
+
+    private $units = 0;
+    private $key = '';
+    private $origin;
+
+    public function __construct($key, $origin = null, $units = null)
+    {
+        $this->key = $key;
+        $this->origin = $origin ?: $this->origin;
+        $this->units = $units ?: $this->units;
+    }
 
     public function calculate($fileName)
     {
         $row = 1;
         if (($handle = fopen($fileName, "r")) !== false) {
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
-                $this->calculateDistance()
-                $num = count($data);
-                echo "<p> $num fields in line $row: <br /></p>\n";
-                $row++;
-                for ($c=0; $c < $num; $c++) {
-                    echo $data[$c] . "<br />\n";
-                }
+                $this->calculateDistance($data[1], $data[0]);
             }
             fclose($handle);
         }
     }
 
-    private function calculateDistance($origin, $destination) {
-        $url = $this->generateRequestURL();
-        $xml = file_get_contents("http://www.example.com/file.xml");
+    private function calculateDistance($origin, $destination)
+    {
+        $url = $this->generateRequestURL($origin, $destination);
+        $body = file_get_contents($url);
+        $json = json_decode($body);
+        $data = $this->parseDistanceData($json);
+        echo($origin." to ".$destination."->".$data."\n");
     }
 
-    private function generateRequestURL()
+    private function parseDistanceData($data)
     {
-        return DistanceCalculator::API_HOST . "/" . DistanceCalculator::API_URL;
+        if ($data->status != 'OK') {
+            throw new \Exception($data->error_message);
+        }
+
+        if ($data->rows[0]->elements[0]->status==='OK') {
+            return new DistanceData(
+                $data->rows[0]->elements[0]->distance->value,
+                $data->rows[0]->elements[0]->distance->text,
+                $data->rows[0]->elements[0]->duration->value,
+                $data->rows[0]->elements[0]->duration->text
+            );
+        }
+
+//        } else {
+//            return new DistanceDataError()???
+//        }
+        return null;
+    }
+
+    private function getBaseURL()
+    {
+        return DistanceCalculator::API_HOST . DistanceCalculator::API_URL;
+    }
+
+    private function generateRequestURL($origin, $destination)
+    {
+        $parameters = array(
+            'units' => $this->units,
+            'key'=> $this->key,
+            'origins'=> $origin,
+            'destinations' => $destination
+        );
+        $query = http_build_query($parameters);
+
+        return $this->getBaseURL() . $query;
     }
 
 

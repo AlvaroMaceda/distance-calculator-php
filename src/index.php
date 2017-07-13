@@ -34,6 +34,7 @@ function parseArguments()
     }
     return $out;
 }
-
-$calculator = new \DistanceCalculator\DistanceCalculator();
-$calculator->calculate('../test/fixtures/OneColumn2.csv');
+array_shift($argv);
+$key = $argv[0];
+$calculator = new \DistanceCalculator\DistanceCalculator($key);
+$calculator->calculate('../test/fixtures/TwoColumns2.csv');
