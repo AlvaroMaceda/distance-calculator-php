@@ -1,0 +1,12 @@
+{
+    "name": "alvaromaceda/distance-calculator",
+    "description": "Distance calculator using Google",
+    "license": "Public Domain",
+    "authors": [
+        {
+            "name": "Alvaro Maceda",
+            "email": "alvaro@alvaromaceda.es"
+        }
+    ],
+    "require": {}
+}
