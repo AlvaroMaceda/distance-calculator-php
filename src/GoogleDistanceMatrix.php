@@ -14,14 +14,22 @@ class GoogleDistanceMatrix
     const API_HOST = 'https://maps.googleapis.com';
     const API_URL = '/maps/api/distancematrix/json?';
     const DEFAULT_UNITS = 'metric';
+    const DEFAULT_LANGUAGE = 'en';
 
     private $units;
     private $key = '';
+    private $language;
 
     public function __construct($key, $units = null)
     {
         $this->key = $key;
         $this->units = $units ?: static::DEFAULT_UNITS;
+        $this->language = static::DEFAULT_LANGUAGE;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
     }
 
     public function calculateDistance($origin, $destination)
@@ -64,6 +72,7 @@ class GoogleDistanceMatrix
     {
         $parameters = array(
             'units' => $this->units,
+            'language' => $this->language,
             'key'=> $this->key,
             'origins'=> $origin,
             'destinations' => $destination

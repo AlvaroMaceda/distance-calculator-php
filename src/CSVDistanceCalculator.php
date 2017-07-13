@@ -13,6 +13,11 @@ class CSVDistanceCalculator
         $this->distanceMatrix = new GoogleDistanceMatrix($key, $units);
     }
 
+    public function setLanguage($language)
+    {
+        $this->distanceMatrix->setLanguage($language);
+    }
+
     public function calculate($fileOrigin, $fileDestination = null)
     {
         $fileDestination = $fileDestination ?: STDOUT;

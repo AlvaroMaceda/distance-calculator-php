@@ -41,6 +41,7 @@ $key = $argv[0];
 $origin = 'Lepe';
 
 $calculator = new \DistanceCalculator\CSVDistanceCalculator($key, $origin);
+$calculator->setLanguage('es');
 //$calculator = new \DistanceCalculator\CSVDistanceCalculator($key);
 $fileOrigin = fopen('../test/fixtures/MoreThanTwoColumns.csv', "r");
 $calculator->calculate($fileOrigin);
