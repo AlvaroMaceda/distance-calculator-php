@@ -1,9 +1,5 @@
-#!/usr/bin/env php
 <?php
-
-
 require_once 'autoloader.php';
-
 
 function parseArguments()
 {
@@ -38,13 +34,15 @@ function parseArguments()
 }
 array_shift($argv);
 $key = $argv[0];
+$directions = $argv[1];
+$origin = $argv[2];
 
-$origin = 'Lepe';
+//$origin = 'Lepe';
+//$calculator = new \DistanceCalculator\CSVDistanceCalculator($key);
+//$fileOrigin = fopen('../test/fixtures/MoreThanTwoColumns.csv', "r");
 
 $calculator = new \DistanceCalculator\CSVDistanceCalculator($key, $origin);
 $calculator->setLanguage('es');
-//$calculator = new \DistanceCalculator\CSVDistanceCalculator($key);
-$fileOrigin = fopen('../test/fixtures/MoreThanTwoColumns.csv', "r");
-$calculator->calculate($fileOrigin);
-
-fclose($fileOrigin);
+$directionsFile = fopen($directions, "r");
+$calculator->calculate($directionsFile);
+fclose($directionsFile);

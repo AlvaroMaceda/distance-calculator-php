@@ -5,6 +5,9 @@ require_once 'autoloader.php';
 
 class CSVDistanceCalculator
 {
+    private $delimiter = ",";
+    private $maxLineLenght = null; //Null for no limits
+
     private $commonOrigin;
 
     public function __construct($key, $commonOrigin = null, $units = null)
@@ -22,7 +25,7 @@ class CSVDistanceCalculator
     {
         $fileDestination = $fileDestination ?: STDOUT;
 
-        while (($line = fgetcsv($fileOrigin, 1000, ",")) !== false) {
+        while (($line = fgetcsv($fileOrigin, $this->maxLineLenght, $this->delimiter)) !== false) {
             $pathData = $this->calculatePathDataFromLine($line);
             $distance = $this->distanceMatrix->calculateDistance($pathData['origin'], $pathData['destination']);
             $this->writeResultToOutput($fileDestination, $line, $distance);
