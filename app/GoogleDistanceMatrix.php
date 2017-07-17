@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alvaro
- * Date: 13/07/17
- * Time: 12:33
- */
-
 namespace DistanceCalculator;
 
 
@@ -15,10 +8,12 @@ class GoogleDistanceMatrix
     const API_URL = '/maps/api/distancematrix/json?';
     const DEFAULT_UNITS = 'metric';
     const DEFAULT_LANGUAGE = 'en';
+    const DEFAULT_MODE = TravelModes::DRIVING;
 
     private $units;
     private $key = '';
     private $language;
+    private $mode;
 
     public function __construct($key, $units = null)
     {
@@ -30,6 +25,11 @@ class GoogleDistanceMatrix
     public function setLanguage($language)
     {
         $this->language = $language;
+    }
+
+    public function setMode($mode)
+    {
+        $this->mode = $mode;
     }
 
     public function calculateDistance($origin, $destination)
@@ -75,7 +75,8 @@ class GoogleDistanceMatrix
             'language' => $this->language,
             'key'=> $this->key,
             'origins'=> $origin,
-            'destinations' => $destination
+            'destinations' => $destination,
+            'mode' => $this->mode
         );
         $query = http_build_query($parameters);
 

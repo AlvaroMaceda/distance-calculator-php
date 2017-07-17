@@ -21,6 +21,11 @@ class CSVDistanceCalculator
         $this->distanceMatrix->setLanguage($language);
     }
 
+    public function setMode($mode)
+    {
+        $this->distanceMatrix->setMode($mode);
+    }
+
     public function calculate($fileOrigin, $fileDestination = null)
     {
         $fileDestination = $fileDestination ?: STDOUT;

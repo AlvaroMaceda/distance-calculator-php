@@ -32,6 +32,9 @@ function parseArguments()
     }
     return $out;
 }
+
+//$foo = parseArguments();
+
 array_shift($argv);
 $key = $argv[0];
 $directions = $argv[1];
@@ -43,6 +46,7 @@ $origin = $argv[2];
 
 $calculator = new \DistanceCalculator\CSVDistanceCalculator($key, $origin);
 $calculator->setLanguage('es');
+//$calculator->setMode(\DistanceCalculator\TravelModes::BICYCLING);
 $directionsFile = fopen($directions, "r");
 $calculator->calculate($directionsFile);
 fclose($directionsFile);
